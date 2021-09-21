@@ -34,7 +34,22 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
+
     </dl>
+    <h5>  Attending Members--- </h5> 
+    @if (Model.AttendingMember.Count>0)
+    {
+        <ul>
+            @foreach (var member in Model.AttendingMember)
+            {
+            <li> @member.ApplicationUser.Email</li>
+            }
+        </ul>
+    }
+    else
+    { 
+    <span>no members have joined</span>
+    }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |

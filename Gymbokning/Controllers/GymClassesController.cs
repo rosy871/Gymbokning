@@ -7,16 +7,54 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Gymbokning.Data;
 using Gymbokning.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Gymbokning.Controllers
 {
     public class GymClassesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
+       
 
-        public GymClassesController(ApplicationDbContext context)
+        public GymClassesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
+        }
+
+       
+        public async Task<IActionResult> BookingToogle(int? id,ApplicationUserGymclass applicationUserGymclass)
+        {
+            if (id == null)
+                return NotFound();
+           // string userId = userManager.GetUserId(User);
+            //if (userId == null)
+            if(!User.Identity.IsAuthenticated)
+            {
+                return LocalRedirect("/Identity/Account/Login");
+            }
+
+            string userId = userManager.GetUserId(User);
+
+            var model = await _context.ApplicationUserGymclasses.Where(g => g.GymClassId == id && g.ApplicationUserId == userId).FirstOrDefaultAsync();
+            // if (applicationUserGymclass.ApplicationUserId==userId && applicationUserGymclass.GymClassId==id)
+            if (model!=null)
+            {
+                _context.Remove(model);
+            }
+            else
+            {
+                applicationUserGymclass.ApplicationUserId = userId;
+                applicationUserGymclass.GymClassId = (int)id;
+                _context.Add(applicationUserGymclass);
+               
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+           
+
         }
 
         // GET: GymClasses
@@ -33,7 +71,7 @@ namespace Gymbokning.Controllers
                 return NotFound();
             }
 
-            var gymClass = await _context.GymClasses
+            var gymClass = await _context.GymClasses.Include(g=>g.AttendingMember).ThenInclude(g=>g.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (gymClass == null)
             {

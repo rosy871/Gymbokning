@@ -15,13 +15,14 @@ namespace Gymbokning.Data
         {
         }
         public DbSet<GymClass> GymClasses { get; set; }
+        public DbSet<ApplicationUserGymclass> ApplicationUserGymclasses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             builder.Entity<ApplicationUserGymclass>()
-                  .HasKey(t=>new { t.ApplicationUserId,t.GymClassId});
+                  .HasKey(t=>new { t.ApplicationUserId, t.GymClassId});
         }
     }
 }
