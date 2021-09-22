@@ -29,7 +29,7 @@ namespace Gymbokning
                 //context.Database.EnsureDeleted();
                 //context.Database.Migrate();
 
-                
+
                 try
                 {
                     SeedData.InitAsync(context, services).Wait();

@@ -15,7 +15,9 @@
  @{ if (!User.Identity.IsAuthenticated)
      {<span> not logged in</span> }
      else
-     { <span> logged in as @User.Identity.Name</span> }
+     {
+        
+         <span> logged in as @User.Identity.Name</span> }
  }
 <table class="table">
     <thead>

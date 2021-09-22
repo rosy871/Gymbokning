@@ -71,18 +71,7 @@ namespace Gymbokning.Data
             }
             
 
-            //for (int i = 0; i < 20; i++)
-            //{
-            //    var temp = new GymClass
-            //    {
-            //        Name = faker.Company.CatchPhrase(),
-            //        Description = faker.Hacker.Verb(),
-            //        Duration = new TimeSpan(0, 55, 0),
-            //        StartDate = DateTime.Now.AddDays(faker.Random.Int(-5, 5))
-            //    };
-
-            //    gymClasses.Add(temp);
-            //}
+            
 
             return gymClasses;
         }
@@ -108,6 +97,9 @@ namespace Gymbokning.Data
 
             var admin = new ApplicationUser
             {
+                FirstName = "John",
+                LastName = "Johansson",
+                TimeOfRegistration = DateTime.Now,
                 UserName = adminEmail,
                 Email = adminEmail
             };

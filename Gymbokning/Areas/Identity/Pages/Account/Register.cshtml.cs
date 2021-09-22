@@ -46,6 +46,10 @@ namespace Gymbokning.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string FullName { get { return $"{FirstName} {LastName}"; } }
+            public DateTime TimeOfRegistration { get; set; }
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -75,7 +79,12 @@ namespace Gymbokning.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { 
+                                                FirstName=Input.FirstName,
+                                                LastName=Input.LastName,
+                                                TimeOfRegistration=DateTime.Now,
+                                                UserName = Input.Email,
+                                                Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
