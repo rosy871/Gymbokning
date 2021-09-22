@@ -80,7 +80,7 @@ namespace Gymbokning.Controllers
 
             return View(gymClass);
         }
-        [Authorize]
+        [Authorize (Roles ="Admin")]
         // GET: GymClasses/Create
         public IActionResult Create()
         {
@@ -105,7 +105,7 @@ namespace Gymbokning.Controllers
         }
 
         // GET: GymClasses/Edit/5
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -156,9 +156,9 @@ namespace Gymbokning.Controllers
             }
             return View(gymClass);
         }
-        
+
         // GET: GymClasses/Delete/5
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
