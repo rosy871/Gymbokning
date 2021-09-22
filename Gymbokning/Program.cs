@@ -16,22 +16,32 @@ namespace Gymbokning
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            // CreateHostBuilder(args).Build().Run();
 
-            //var host = CreateHostBuilder(args).Build();
+            var host = CreateHostBuilder(args).Build();
 
-            //using (var scope = host.Services.CreateScope())
-            //{
-            //    var services = scope.ServiceProvider;
-            //    var context = services.GetRequiredService<ApplicationDbContext>();
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<ApplicationDbContext>();
 
-            //    context.Database.EnsureDeleted();
-            //    context.Database.Migrate();
+                //it will delete whole db and migrate every time while running
+                //context.Database.EnsureDeleted();
+                //context.Database.Migrate();
 
-            //    //var config = services.GetRequiredService < IConfiguration() >;
-            //}
+                
+                try
+                {
+                    SeedData.InitAsync(context, services).Wait();
+                }
+                catch (Exception ex)
+                {
 
-            //host.Run();
+                    throw;
+                }
+            }
+
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

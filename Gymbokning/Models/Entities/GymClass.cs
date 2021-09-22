@@ -10,10 +10,10 @@ namespace Gymbokning.Models.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = @"{0:hh\:mm\:ss}")]
-        [DataType(DataType.Time)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        [DataType(DataType.Date)]
         public DateTime StartTime { get; set; }
-        [Required, DataType(DataType.Time)]
+        [Required]
         public TimeSpan Duration { get; set; }
         public DateTime EndTime { get { return StartTime + Duration; } }
         public String Description { get; set; }
