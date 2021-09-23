@@ -9,6 +9,7 @@ using Gymbokning.Data;
 using Gymbokning.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Gymbokning.Models.ViewModels;
 
 namespace Gymbokning.Controllers
 {
@@ -58,9 +59,64 @@ namespace Gymbokning.Controllers
         }
 
         // GET: GymClasses
+        //public async Task<IActionResult> Index()
+        //{
+           
+        //    return View(await _context.GymClasses.ToListAsync());
+        //}
+
         public async Task<IActionResult> Index()
         {
-            return View(await _context.GymClasses.ToListAsync());
+            string userId;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                userId = userManager.GetUserId(User);
+
+
+                var model1 = await _context.GymClasses.Include(m => m.AttendingMember)
+                                          .Select(g => new NewIndexViewModel
+                                          {
+                                              Id = g.Id,
+                                              Name = g.Name,
+                                              StartTime = g.StartTime,
+                                              Duration = g.Duration,
+                                              Description = g.Description,
+                                              UserBookGym = g.AttendingMember.Any(k=>k.ApplicationUserId==userId)
+                                          }).ToListAsync();
+                return View(model1);
+            }
+
+            var model = await _context.GymClasses.Include(m => m.AttendingMember)
+                                         .Select(g => new NewIndexViewModel
+                                         {
+                                             Id = g.Id,
+                                             Name = g.Name,
+                                             StartTime = g.StartTime,
+                                             Duration = g.Duration,
+                                             Description = g.Description,
+                                          
+                                         }).ToListAsync();
+            return View(model);
+
+        }
+
+        [Authorize]
+        public async Task<IActionResult> History()
+        {
+            var userId = userManager.GetUserId(User);
+            var model = await _context.GymClasses.IgnoreQueryFilters().Include(g => g.AttendingMember).Where(g => g.StartTime < DateTime.Now ).ToListAsync();
+            model =model.Where(g => g.AttendingMember.Any(m => m.ApplicationUserId == userId)).ToList();
+            return View(model);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> BookedGymClasses()
+        {
+            var userId = userManager.GetUserId(User);
+            var model = await _context.GymClasses.IgnoreQueryFilters().Include(g => g.AttendingMember).Where(g => g.StartTime > DateTime.Now).ToListAsync();
+            model = model.Where(g => g.AttendingMember.Any(m => m.ApplicationUserId == userId)).ToList();
+            return View(model);
         }
         [Authorize]
         // GET: GymClasses/Details/5

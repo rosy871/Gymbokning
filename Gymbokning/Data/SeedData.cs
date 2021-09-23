@@ -30,9 +30,9 @@ namespace Gymbokning.Data
             userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
             if (userManager is null) throw new NullReferenceException(nameof(UserManager<ApplicationUser>));
 
-            var roleNames = new[] { "Members","Admin" };
+            var roleNames = new[] { "Instructors","Members","Admin" };
             string adminEmail = "admin@gymbokinig.se";
-            string adminPW = "Bytmig21!";
+            string adminPW = "Bytmig21";
 
             var gymclasses = GetGymClasses();
             await db.AddRangeAsync(gymclasses);
@@ -50,20 +50,24 @@ namespace Gymbokning.Data
         private static IEnumerable<GymClass> GetGymClasses()
         {
             var gymClasses = new List<GymClass>();
-            var gymClassNames = new[] { "Morning Yoga",
+            var gymClassNames = new[] { "Yoga For All",
+                                        "Morning Yoga",
                                         "Pilates", 
                                         "Power Hour", 
                                         "Fab Abs", 
                                         "Zumba", 
-                                        "Kettlebell Circuits" };
-            int num = 15;
+                                        "Kettlebell Circuits",
+                                         "Morning Yoga",
+                                         "Love Pilates"
+            };
+            int num = -10;
             foreach (var item in gymClassNames)
             {
                 var temp = new GymClass
                 {
                     Name = item,
                     Description = item+" for healthy body",
-                    Duration = new TimeSpan(1,num,0),
+                    Duration = new TimeSpan(1,15,0),
                     StartTime = DateTime.Now.AddDays(num)     
                 };
                 gymClasses.Add(temp);
@@ -82,7 +86,6 @@ namespace Gymbokning.Data
 
             foreach (var role in roleNames)
             {
-
                 if (await userManager.IsInRoleAsync(admin, role)) continue;
                 var result = await userManager.AddToRoleAsync(admin, role);
                 if (!result.Succeeded) throw new Exception(string.Join("\n", result.Errors));

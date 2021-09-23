@@ -1,25 +1,14 @@
-﻿@*@model IEnumerable<Gymbokning.Models.Entities.GymClass>*@
-@model IEnumerable<Gymbokning.Models.ViewModels.NewIndexViewModel>
+﻿@model IEnumerable<Gymbokning.Models.Entities.GymClass>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "BookedGymClasses";
 }
 
- @{ if (!User.Identity.IsAuthenticated)
-     {<span> not logged in</span> }
-     else
-     {
-        
-         <h5> logged in  </h5> }
- }
+<h1>BookedGymClasses</h1>
 
-@if (User.IsInRole("Admin")) { 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-
-}
-
 <table class="table">
     <thead>
         <tr>
@@ -55,28 +44,14 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @if (User.IsInRole("Admin"))
-                    {
-
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <span>|</span>
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> <span>|</span>
-
-                    }
-
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    @{ string book;
-                        if (!item.UserBookGym)
-                        {
-                            book = "Book";
-                        }
-                        else book = "Cancel Booking";
-                        }
-    
-
-
-                <a asp-action="BookingToogle" asp-route-id="@item.Id">@book</a>
+                    <a asp-action="BookingToogle" asp-route-id="@item.Id">Cancel Booking</a>
                 </td>
             </tr>
         }
     </tbody>
+
 </table>
+@if (Model.Count() == 0)
+{
+    <span> Gym class not booked </span>
+}

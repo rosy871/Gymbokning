@@ -46,7 +46,9 @@ namespace Gymbokning.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Required]
             public string FirstName { get; set; }
+            [Required]
             public string LastName { get; set; }
             public string FullName { get { return $"{FirstName} {LastName}"; } }
             public DateTime TimeOfRegistration { get; set; }

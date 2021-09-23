@@ -26,6 +26,9 @@ namespace Gymbokning.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TimeOfRegistration = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -169,7 +172,7 @@ namespace Gymbokning.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicationUserGymclass",
+                name: "ApplicationUserGymclasses",
                 columns: table => new
                 {
                     GymClassId = table.Column<int>(type: "int", nullable: false),
@@ -177,15 +180,15 @@ namespace Gymbokning.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationUserGymclass", x => new { x.ApplicationUserId, x.GymClassId });
+                    table.PrimaryKey("PK_ApplicationUserGymclasses", x => new { x.ApplicationUserId, x.GymClassId });
                     table.ForeignKey(
-                        name: "FK_ApplicationUserGymclass_AspNetUsers_ApplicationUserId",
+                        name: "FK_ApplicationUserGymclasses_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ApplicationUserGymclass_GymClasses_GymClassId",
+                        name: "FK_ApplicationUserGymclasses_GymClasses_GymClassId",
                         column: x => x.GymClassId,
                         principalTable: "GymClasses",
                         principalColumn: "Id",
@@ -193,8 +196,8 @@ namespace Gymbokning.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserGymclass_GymClassId",
-                table: "ApplicationUserGymclass",
+                name: "IX_ApplicationUserGymclasses_GymClassId",
+                table: "ApplicationUserGymclasses",
                 column: "GymClassId");
 
             migrationBuilder.CreateIndex(
@@ -240,7 +243,7 @@ namespace Gymbokning.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ApplicationUserGymclass");
+                name: "ApplicationUserGymclasses");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");

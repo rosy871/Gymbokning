@@ -23,6 +23,12 @@ namespace Gymbokning.Data
 
             builder.Entity<ApplicationUserGymclass>()
                   .HasKey(t=>new { t.ApplicationUserId, t.GymClassId});
+
+        // queryfilter here for showing gymclasses which starts in future only
+            builder.Entity<GymClass>().HasQueryFilter(g => g.StartTime > DateTime.Now);
+
         }
+
+
     }
 }
