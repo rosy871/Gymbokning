@@ -91,6 +91,7 @@ namespace Gymbokning.Areas.Identity.Pages.Account
                 var addToRoleResult = await _userManager.AddToRoleAsync(user, "Member");
                 if (result.Succeeded)
                 {
+                    
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

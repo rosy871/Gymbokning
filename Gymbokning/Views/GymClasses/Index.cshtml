@@ -1,4 +1,4 @@
-﻿@*@model IEnumerable<Gymbokning.Models.Entities.GymClass>*@
+﻿
 @model IEnumerable<Gymbokning.Models.ViewModels.NewIndexViewModel>
 
 @{
@@ -7,13 +7,13 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <h5> Hello @ViewBag.fullname ! </h5> 
-    <h5> Hello @*@User.Claims.First(u=>u.Type=="FullName").Value*@ </h5>
-    <h5> Hello @User.Claims.ToList()</h5>
-    foreach (var claim in User.Claims)
+   
+    <h5> Hello @User.Claims.First(u=>u.Type=="FullName").Value </h5>
+   
+    @*foreach (var claim in User.Claims)
     {
         <pre> @claim.Type+" "+@claim.Value </pre>
-    }
+    }*@
 }
 
 
