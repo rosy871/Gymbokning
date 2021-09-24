@@ -16,6 +16,7 @@ namespace Gymbokning.Data
         }
         public DbSet<GymClass> GymClasses { get; set; }
         public DbSet<ApplicationUserGymclass> ApplicationUserGymclasses { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

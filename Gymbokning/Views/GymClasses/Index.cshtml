@@ -5,13 +5,10 @@
     ViewData["Title"] = "Index";
 }
 
- @{ if (!User.Identity.IsAuthenticated)
-     {<span> not logged in</span> }
-     else
+ @if (User.Identity.IsAuthenticated)
      {
-        
-         <h5> logged in  </h5> }
- }
+         <h5> Hello @ViewBag.fullname ! </h5>
+     }
 
 @if (User.IsInRole("Admin")) { 
 <p>
@@ -20,9 +17,9 @@
 
 }
 
-<table class="table">
+<table class="table table-striped">
     <thead>
-        <tr>
+        <tr class="bg-secondary">
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>

@@ -73,6 +73,8 @@ namespace Gymbokning.Controllers
             {
                 userId = userManager.GetUserId(User);
 
+                var user = await _context.ApplicationUsers.Where(k => k.Id == userId).FirstOrDefaultAsync();
+                ViewBag.fullname = user.FullName;
 
                 var model1 = await _context.GymClasses.Include(m => m.AttendingMember)
                                           .Select(g => new NewIndexViewModel

@@ -9,6 +9,7 @@ namespace Gymbokning.Models.Entities
     public class GymClass
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         [DataType(DataType.Date)]
