@@ -88,6 +88,7 @@ namespace Gymbokning.Areas.Identity.Pages.Account
                                                 UserName = Input.Email,
                                                 Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                var addToRoleResult = await _userManager.AddToRoleAsync(user, "Member");
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

@@ -5,15 +5,23 @@
     ViewData["Title"] = "Index";
 }
 
- @if (User.Identity.IsAuthenticated)
-     {
-         <h5> Hello @ViewBag.fullname ! </h5>
-     }
+@if (User.Identity.IsAuthenticated)
+{
+    <h5> Hello @ViewBag.fullname ! </h5> 
+    <h5> Hello @*@User.Claims.First(u=>u.Type=="FullName").Value*@ </h5>
+    <h5> Hello @User.Claims.ToList()</h5>
+    foreach (var claim in User.Claims)
+    {
+        <pre> @claim.Type+" "+@claim.Value </pre>
+    }
+}
 
-@if (User.IsInRole("Admin")) { 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
 
 }
 
@@ -67,11 +75,11 @@
                             book = "Book";
                         }
                         else book = "Cancel Booking";
-                        }
-    
+                    }
 
 
-                <a asp-action="BookingToogle" asp-route-id="@item.Id">@book</a>
+
+                    <a asp-action="BookingToogle" asp-route-id="@item.Id">@book</a>
                 </td>
             </tr>
         }

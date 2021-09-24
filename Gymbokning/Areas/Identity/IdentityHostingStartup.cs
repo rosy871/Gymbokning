@@ -1,5 +1,6 @@
 ﻿using System;
 using Gymbokning.Data;
+using Gymbokning.Models.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -15,6 +16,8 @@ namespace Gymbokning.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => {
+                services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationClaimsPrincipalFactory>();
+               
             });
         }
     }
