@@ -65,18 +65,40 @@ namespace Gymbokning.Controllers
         //    return View(await _context.GymClasses.ToListAsync());
         //}
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(IndexViewModel vm)
         {
             string userId;
 
-            if (User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated)
             {
+                
+                var model = await _context.GymClasses.Include(m => m.AttendingMember)
+                                           .Select(g => new NewIndexViewModel
+                                           {
+                                               Id = g.Id,
+                                               Name = g.Name,
+                                               StartTime = g.StartTime,
+                                               Duration = g.Duration,
+                                               Description = g.Description,
+
+                                           }).ToListAsync();
+                var modell = new IndexViewModel
+                {
+                    GymClasses=model,
+                    ShowHistory=false
+                };
+                return View(modell);
+            }
+
                 userId = userManager.GetUserId(User);
 
-                var user = await _context.ApplicationUsers.Where(k => k.Id == userId).FirstOrDefaultAsync();
-                ViewBag.fullname = user.FullName;
-
-                var model1 = await _context.GymClasses.Include(m => m.AttendingMember)
+                var ischecked = vm.ShowHistory;
+                
+               
+                if (ischecked)
+                {
+                    var model2 = await _context.GymClasses.Include(m => m.AttendingMember)
+                                          .IgnoreQueryFilters()
                                           .Select(g => new NewIndexViewModel
                                           {
                                               Id = g.Id,
@@ -84,22 +106,37 @@ namespace Gymbokning.Controllers
                                               StartTime = g.StartTime,
                                               Duration = g.Duration,
                                               Description = g.Description,
-                                              UserBookGym = g.AttendingMember.Any(k=>k.ApplicationUserId==userId)
+                                              UserBookGym = g.AttendingMember.Any(k => k.ApplicationUserId == userId)
                                           }).ToListAsync();
-                return View(model1);
-            }
+                    var modell2 = new IndexViewModel
+                    {
+                        GymClasses = model2,
+                        ShowHistory = vm.ShowHistory
+                    };
 
-            var model = await _context.GymClasses.Include(m => m.AttendingMember)
-                                         .Select(g => new NewIndexViewModel
-                                         {
-                                             Id = g.Id,
-                                             Name = g.Name,
-                                             StartTime = g.StartTime,
-                                             Duration = g.Duration,
-                                             Description = g.Description,
-                                          
-                                         }).ToListAsync();
-            return View(model);
+                    return View(modell2);
+                }
+
+            var model1 = await _context.GymClasses.Include(m => m.AttendingMember)
+                                     .Select(g => new NewIndexViewModel
+                                     {
+                                         Id = g.Id,
+                                         Name = g.Name,
+                                         StartTime = g.StartTime,
+                                         Duration = g.Duration,
+                                         Description = g.Description,
+                                         UserBookGym = g.AttendingMember.Any(k => k.ApplicationUserId == userId)
+                                     }).ToListAsync();
+
+            var modell1 = new IndexViewModel
+            {
+                GymClasses = model1,
+                ShowHistory = vm.ShowHistory
+            };
+            return View(modell1);
+
+
+
 
         }
 

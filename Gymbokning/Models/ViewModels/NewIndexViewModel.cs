@@ -18,5 +18,6 @@ namespace Gymbokning.Models.ViewModels
         public DateTime EndTime { get { return StartTime + Duration; } }
         public String Description { get; set; }
         public bool UserBookGym { get; set; }
+       
     }
 }

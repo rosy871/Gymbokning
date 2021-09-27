@@ -22,11 +22,17 @@ namespace Gymbokning.Data
         {
             base.OnModelCreating(builder);
 
+
             builder.Entity<ApplicationUserGymclass>()
                   .HasKey(t=>new { t.ApplicationUserId, t.GymClassId});
 
         // queryfilter here for showing gymclasses which starts in future only
             builder.Entity<GymClass>().HasQueryFilter(g => g.StartTime > DateTime.Now);
+
+           
+            //CreateMap<IEnumerable<GymClass>, IndexViewModel>()
+            //   .ForMember(dest => dest.ShowHistory, opt => opt.Ignore())
+            //   .ForMember(dest => dest.GymClasses, from => from.MapFrom(g => g.ToList()));
 
         }
 

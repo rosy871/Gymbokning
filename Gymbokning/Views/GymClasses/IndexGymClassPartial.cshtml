@@ -1,0 +1,43 @@
+﻿@model IEnumerable<NewIndexViewModel>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @if (User.IsInRole("Admin"))
+                {
+
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <span>|</span>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> <span>|</span>
+
+                }
+
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                @{ string book;
+                    if (!item.UserBookGym)
+                    {
+                        book = "Book";
+                    }
+                    else book = "Cancel Booking";
+                }
+
+
+
+                <a asp-action="BookingToogle" asp-route-id="@item.Id">@book</a>
+            </td>
+        </tr>
+    }
+

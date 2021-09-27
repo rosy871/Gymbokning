@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<Gymbokning.Models.ViewModels.NewIndexViewModel>
+@model Gymbokning.Models.ViewModels.IndexViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -7,13 +7,13 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-   
-    <h5> Hello @User.Claims.First(u=>u.Type=="FullName").Value </h5>
-   
+
+    <h5> Hello @User.Claims.First(u => u.Type == "FullName").Value </h5>
+
     @*foreach (var claim in User.Claims)
-    {
-        <pre> @claim.Type+" "+@claim.Value </pre>
-    }*@
+        {
+            <pre> @claim.Type+" "+@claim.Value </pre>
+        }*@
 }
 
 
@@ -23,65 +23,35 @@
         <a asp-action="Create">Create New</a>
     </p>
 
+    <form asp-action="Index">
+        <label> Show History</label>
+        <input  type="checkbox" asp-for="ShowHistory" id="HistoryCheckbox" />
+
+    </form>
+
 }
+
+
 
 <table class="table table-striped">
     <thead>
         <tr class="bg-secondary">
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.GymClasses.FirstOrDefault().Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartTime)
+                @Html.DisplayNameFor(model => model.GymClasses.FirstOrDefault().StartTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Duration)
+                @Html.DisplayNameFor(model => model.GymClasses.FirstOrDefault().Duration)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.GymClasses.FirstOrDefault().Description)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Duration)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @if (User.IsInRole("Admin"))
-                    {
-
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <span>|</span>
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> <span>|</span>
-
-                    }
-
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    @{ string book;
-                        if (!item.UserBookGym)
-                        {
-                            book = "Book";
-                        }
-                        else book = "Cancel Booking";
-                    }
-
-
-
-                    <a asp-action="BookingToogle" asp-route-id="@item.Id">@book</a>
-                </td>
-            </tr>
-        }
+        <partial name="IndexGymClassPartial" model="@Model.GymClasses" />
     </tbody>
 </table>
